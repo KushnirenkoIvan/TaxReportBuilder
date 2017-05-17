@@ -1,5 +1,7 @@
 package ua.kushnirenko.trb.domain;
 
+import com.sun.istack.internal.NotNull;
+
 import java.time.LocalDateTime;
 
 
@@ -15,10 +17,6 @@ public class Admission {
 
     public LocalDateTime getDate() {
         return date;
-    }
-
-    public void setDate(LocalDateTime date) {
-        this.date = date;
     }
 
     public long getAmount() {
@@ -45,17 +43,15 @@ public class Admission {
         this.desc = desc;
     }
 
-    public Admission() {
-    }
-
-    public Admission(LocalDateTime date) {
+    public Admission(@NotNull LocalDateTime date) {
         this.date = date;
     }
 
-    public Admission(LocalDateTime date, long amount, float ratio) {
+    public Admission(@NotNull LocalDateTime date, long amount, float ratio, String desc) {
         this.date = date;
         this.amount = amount;
         this.ratio = ratio;
+        this.desc = desc;
     }
 
     /**
@@ -77,12 +73,15 @@ public class Admission {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        Admission adm = (Admission) obj;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-        return this.getDate().isEqual(adm.getDate())
-                && this.getAmount() == adm.getAmount()
-                && this.getRatio() == adm.getRatio()
-                && this.getDesc().equals(adm.getDesc());
+        Admission admission = (Admission) o;
+
+        if (date != null ? !date.equals(admission.date) : admission.date != null) return false;
+        if (amount != admission.amount) return false;
+        if (Float.compare(admission.ratio, ratio) != 0) return false;
+        return desc != null ? desc.equals(admission.desc) : admission.desc == null;
     }
 }
